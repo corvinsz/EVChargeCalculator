@@ -1,4 +1,4 @@
-import { Car, cars } from './car.js';
+//import { Car, cars } from './car.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('calculatorForm');
@@ -7,37 +7,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const carSelect = document.getElementById('carSelect');
 
   // Populate car options
-  cars.forEach((car, index) => {
-    const option = document.createElement('option');
-    option.value = index;
-    option.textContent = car.name;
-    carSelect.appendChild(option);
-  });
+  // cars.forEach((car, index) => {
+  //   const option = document.createElement('option');
+  //   option.value = index;
+  //   option.textContent = car.name;
+  //   carSelect.appendChild(option);
+  // });
 
-  carSelect.addEventListener('selectionchange', () => {
-    selectedCar = cars[carSelect.value]
-    alert(selectedCar)
-  });
-
-  capacityInputType.addEventListener('change', () => {
-    const selectedType = capacityInputType.value;
-    if (selectedType === 'percentage') {
-      capacityUnit.textContent = 'Enter as a percentage';
-    } else if (selectedType === 'km') {
-      capacityUnit.textContent = 'Enter in kilometers';
-    }
-  });
+  // carSelect.addEventListener('selectionchange', () => {
+  //   selectedCar = cars[carSelect.value]
+  //   alert(selectedCar)
+  // });
 
    form.addEventListener('submit', (event) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevent form from submitting and refreshing the page
 
-        const selectedCarIndex = carSelect.value;
-        if (selectedCarIndex === '') {
-          resultDiv.innerHTML = '<div class="alert alert-danger">Please select a car.</div>';
-          return;
-        }
+        // const selectedCarIndex = carSelect.value;
+        // if (selectedCarIndex === '') {
+        //   resultDiv.innerHTML = '<div class="alert alert-danger">Please select a car.</div>';
+        //   return;
+        // }
 
-        const selectedCar = cars[selectedCarIndex];
+        //const selectedCar = cars[selectedCarIndex];
 
     const maxRange = parseFloat(document.getElementById('maxRange').value);
     const currentCapacity = parseFloat(document.getElementById('currentCapacity').value);
@@ -50,14 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let currentRange;
-    if (selectedType === 'percentage') {
+    if (selectedType === '%') {
       currentRange = (currentCapacity / 100) * maxRange;
     } else if (selectedType === 'km') {
       currentRange = currentCapacity;
     }
 
-    const rangeToFullCharge = maxRange - currentRange;
-    const timeToFullCharge = rangeToFullCharge / chargingRate;
+    const missingRange = maxRange - currentRange;
+    const timeToFullCharge = missingRange / chargingRate;
     const timeToFullChargeMinutes = Math.round(timeToFullCharge * 60);
 
     const now = new Date();
