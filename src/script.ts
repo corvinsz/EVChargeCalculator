@@ -1,4 +1,5 @@
-// import { Car, cars } from './car.js';
+import { Car } from "./car/car.js";
+import { Cars } from "./car/carProvider.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('calculatorForm') as HTMLFormElement;
@@ -18,6 +19,23 @@ document.addEventListener('DOMContentLoaded', () => {
   //   selectedCar = cars[carSelect.value]
   //   alert(selectedCar)
   // });
+
+  const carouselContent = document.getElementById('carouselContent')!;
+  alert("populating content")
+  carouselContent.innerHTML = Cars.map((car, index) => createCarouselItem(car, index === 0)).join('');
+
+  function createCarouselItem(car: Car, isActive: boolean): string {
+    return `
+      <div class="carousel-item ${isActive ? 'active' : ''}">
+        <img src="${car.image}" class="d-block w-100" alt="${car.name}">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>${car.name}</h5>
+          <p>Max Range: ${car.maxRange} miles</p>
+        </div>
+      </div>
+    `;
+  }
+
 
   form.addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent form from submitting and refreshing the page

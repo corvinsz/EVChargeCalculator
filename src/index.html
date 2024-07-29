@@ -30,6 +30,19 @@
         <label for="maxRange" class="form-label">Maximum Range (km)</label>
         <input type="number" class="form-control" id="maxRange" required>
       </div>
+
+      <div id="carCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner" id="carouselContent"></div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
       <div class="mb-3">
         <label for="currentCapacity" class="form-label">Current Battery Capacity</label>
         <input type="number" class="form-control" id="currentCapacity" required>
@@ -47,6 +60,6 @@
     <div class="mt-4" id="result"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="generated/script.js"></script>
 </body>
 </html>
