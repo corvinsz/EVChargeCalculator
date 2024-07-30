@@ -24,7 +24,6 @@
 interface Car {
   name: string;
   maxRange: number;
-  image: string;
 }
 
 export { Car };

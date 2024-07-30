@@ -29,19 +29,17 @@
       <div class="mb-3">
         <label for="maxRange" class="form-label">Maximum Range (km)</label>
         <input type="number" class="form-control" id="maxRange" required>
+
+        <div class="container mt">
+          <label for="carDropdown" class="form-label">Select a car:</label>
+          <select id="carDropdown" class="form-select">
+              <option selected>Choose...</option>
+              <!-- Options will be populated here by TypeScript -->
+          </select>
+        </div>
       </div>
 
-      <div id="carCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner" id="carouselContent"></div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
+      
 
       <div class="mb-3">
         <label for="currentCapacity" class="form-label">Current Battery Capacity</label>
@@ -60,6 +58,6 @@
     <div class="mt-4" id="result"></div>
   </div>
 
-  <script type="module" src="generated/script.js"></script>
+  <script type="module" src="dest/script.js"></script>
 </body>
 </html>

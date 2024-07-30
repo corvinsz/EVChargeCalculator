@@ -1,54 +1,26 @@
-import { Car } from "./car/car.js";
 import { Cars } from "./car/carProvider.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('calculatorForm') as HTMLFormElement;
+function populateCarDropdown() {
+  const carDropdown = document.getElementById('carDropdown') as HTMLSelectElement;
+  // Clear existing options
+  carDropdown.innerHTML = '<option selected>Choose...</option>';
+
+  // Add new options from the cars array
+  Cars.forEach(car => {
+      const option = document.createElement('option');
+      option.value = car.name; // Use the car's name as the value
+      option.text = `${car.name} (Range: ${car.maxRange}km)`; // Display name and max range
+      carDropdown.appendChild(option);
+  });
+}
+
+function calculateTime(event: Event) {
+  event.preventDefault(); // Prevent form from submitting and refreshing the page
+
   const resultDiv = document.getElementById('result') as HTMLDivElement;
   const capacityInputType = document.getElementById('capacityInputType') as HTMLSelectElement;
-  const carSelect = document.getElementById('carSelect') as HTMLSelectElement;
 
-  // Populate car options
-  // cars.forEach((car, index) => {
-  //   const option = document.createElement('option');
-  //   option.value = index.toString();
-  //   option.textContent = car.name;
-  //   carSelect.appendChild(option);
-  // });
-
-  // carSelect.addEventListener('selectionchange', () => {
-  //   selectedCar = cars[carSelect.value]
-  //   alert(selectedCar)
-  // });
-
-  const carouselContent = document.getElementById('carouselContent')!;
-  alert("populating content")
-  carouselContent.innerHTML = Cars.map((car, index) => createCarouselItem(car, index === 0)).join('');
-
-  function createCarouselItem(car: Car, isActive: boolean): string {
-    return `
-      <div class="carousel-item ${isActive ? 'active' : ''}">
-        <img src="${car.image}" class="d-block w-100" alt="${car.name}">
-        <div class="carousel-caption d-none d-md-block">
-          <h5>${car.name}</h5>
-          <p>Max Range: ${car.maxRange} miles</p>
-        </div>
-      </div>
-    `;
-  }
-
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent form from submitting and refreshing the page
-
-    // const selectedCarIndex = carSelect.value;
-    // if (selectedCarIndex === '') {
-    //   resultDiv.innerHTML = '<div class="alert alert-danger">Please select a car.</div>';
-    //   return;
-    // }
-
-    // const selectedCar = cars[selectedCarIndex];
-
-    const maxRange = parseFloat((document.getElementById('maxRange') as HTMLInputElement).value);
+  const maxRange = parseFloat((document.getElementById('maxRange') as HTMLInputElement).value);
     const currentCapacity = parseFloat((document.getElementById('currentCapacity') as HTMLInputElement).value);
     const chargingRate = parseFloat((document.getElementById('chargingRate') as HTMLInputElement).value);
     const selectedType = capacityInputType.value;
@@ -91,5 +63,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeLeftString = `${hoursLeft.toString()}:${minutesLeft.toString()}h left`;
 
     resultDiv.innerHTML = `<div class="alert alert-info">Done charging: ${doneChargingDateString} (${timeLeftString})</div>`;
-  });
-});
+}
+
+function onCarSelected(event: Event) {
+  const tbMaxRange = document.getElementById('maxRange') as HTMLInputElement;
+  const selectedDropdownItem = event.target as HTMLSelectElement;
+
+  const selectedCar = Cars.find(x => x.name === selectedDropdownItem.value);
+  if (selectedCar === undefined)
+  {
+    return;
+  }
+  
+  tbMaxRange.value = selectedCar.maxRange.toString();
+}
+
+function onMaxRangeChanged(this: HTMLInputElement, ev: Event) {
+  const carDropdown = document.getElementById('carDropdown') as HTMLSelectElement;
+  carDropdown.selectedIndex = 0;
+}
+
+
+
+function initData() {
+  const tbMaxRange = document.getElementById('maxRange') as HTMLInputElement;
+  tbMaxRange.addEventListener('input', onMaxRangeChanged);
+
+
+  const carDropdown = document.getElementById('carDropdown') as HTMLSelectElement;
+  carDropdown.addEventListener('change', onCarSelected);
+  populateCarDropdown();
+
+  const form = document.getElementById('calculatorForm') as HTMLFormElement;
+  form.addEventListener('submit', calculateTime);
+
+}
+
+document.addEventListener('DOMContentLoaded', initData);

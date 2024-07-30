@@ -3,18 +3,15 @@ import { Car } from "./car";
 const Cars: Car[] = [
     {
       name: "Tesla Model S",
-      maxRange: 396,
-      image: "img/tesla-model-s.jpg"
+      maxRange: 396
     },
     {
       name: "Nissan Leaf",
-      maxRange: 226,
-      image: "img/nissan-leaf.jpg"
+      maxRange: 226
     },
     {
       name: "Chevrolet Bolt EV",
-      maxRange: 259,
-      image: "https://example.com/chevrolet-bolt-ev.jpg"
+      maxRange: 259
     }
   ];
 
