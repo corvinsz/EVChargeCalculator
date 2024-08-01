@@ -1,154 +1,121 @@
 const MILLIS_PER_SECOND = 1000;
-const MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60;   //     60,000
-const MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;     //  3,600,000
-const MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;        // 86,400,000
-
+const MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60; //     60,000
+const MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60; //  3,600,000
+const MILLIS_PER_DAY = MILLIS_PER_HOUR * 24; // 86,400,000
 ///https://stackoverflow.com/questions/49216952/how-to-work-with-timespan-in-typescript
 export class TimeSpan {
-    private _millis: number;
-
-    private static interval(value: number, scale: number): TimeSpan {
+    static interval(value, scale) {
         if (Number.isNaN(value)) {
             throw new Error("value can't be NaN");
         }
-
         const tmp = value * scale;
         const millis = TimeSpan.round(tmp + (value >= 0 ? 0.5 : -0.5));
         if ((millis > TimeSpan.maxValue.totalMilliseconds) || (millis < TimeSpan.minValue.totalMilliseconds)) {
             throw new Error("TimeSpanTooLong");
         }
-
         return new TimeSpan(millis);
     }
-
-    private static round(n: number): number {
+    static round(n) {
         if (n < 0) {
             return Math.ceil(n);
-        } else if (n > 0) {
+        }
+        else if (n > 0) {
             return Math.floor(n);
         }
-
         return 0;
     }
-
-    private static timeToMilliseconds(hour: number, minute: number, second: number): number {
+    static timeToMilliseconds(hour, minute, second) {
         const totalSeconds = (hour * 3600) + (minute * 60) + second;
         if (totalSeconds > TimeSpan.maxValue.totalSeconds || totalSeconds < TimeSpan.minValue.totalSeconds) {
             throw new Error("TimeSpanTooLong");
         }
-
         return totalSeconds * MILLIS_PER_SECOND;
     }
-
-    public static get zero(): TimeSpan {
+    static get zero() {
         return new TimeSpan(0);
     }
-
-    public static get maxValue(): TimeSpan {
+    static get maxValue() {
         return new TimeSpan(Number.MAX_SAFE_INTEGER);
     }
-
-    public static get minValue(): TimeSpan {
+    static get minValue() {
         return new TimeSpan(Number.MIN_SAFE_INTEGER);
     }
-
-    public static fromDays(value: number): TimeSpan {
+    static fromDays(value) {
         return TimeSpan.interval(value, MILLIS_PER_DAY);
     }
-
-    public static fromHours(value: number): TimeSpan {
+    static fromHours(value) {
         return TimeSpan.interval(value, MILLIS_PER_HOUR);
     }
-
-    public static fromMilliseconds(value: number): TimeSpan {
+    static fromMilliseconds(value) {
         return TimeSpan.interval(value, 1);
     }
-
-    public static fromMinutes(value: number): TimeSpan {
+    static fromMinutes(value) {
         return TimeSpan.interval(value, MILLIS_PER_MINUTE);
     }
-
-    public static fromSeconds(value: number): TimeSpan {
+    static fromSeconds(value) {
         return TimeSpan.interval(value, MILLIS_PER_SECOND);
     }
-
-    public static fromTime(days: number, hours: number, minutes: number, seconds: number, milliseconds: number): TimeSpan;
-    public static fromTime(daysOrHours: number, hoursOrMinutes: number, minutesOrSeconds: number, seconds: number, milliseconds?: number): TimeSpan {
+    static fromTime(daysOrHours, hoursOrMinutes, minutesOrSeconds, seconds, milliseconds) {
         if (milliseconds != undefined) {
             return this.fromTimeStartingFromDays(daysOrHours, hoursOrMinutes, minutesOrSeconds, seconds, milliseconds);
-        } else {
+        }
+        else {
             return this.fromTimeStartingFromHours(daysOrHours, hoursOrMinutes, minutesOrSeconds);
         }
     }
-
-    private static fromTimeStartingFromHours(hours: number, minutes: number, seconds: number): TimeSpan {
+    static fromTimeStartingFromHours(hours, minutes, seconds) {
         const millis = TimeSpan.timeToMilliseconds(hours, minutes, seconds);
         return new TimeSpan(millis);
     }
-
-    private static fromTimeStartingFromDays(days: number, hours: number, minutes: number, seconds: number, milliseconds: number): TimeSpan {
+    static fromTimeStartingFromDays(days, hours, minutes, seconds, milliseconds) {
         const totalMilliSeconds = (days * MILLIS_PER_DAY) +
             (hours * MILLIS_PER_HOUR) +
             (minutes * MILLIS_PER_MINUTE) +
             (seconds * MILLIS_PER_SECOND) +
             milliseconds;
-
         if (totalMilliSeconds > TimeSpan.maxValue.totalMilliseconds || totalMilliSeconds < TimeSpan.minValue.totalMilliseconds) {
             throw new Error("TimeSpanTooLong");
         }
         return new TimeSpan(totalMilliSeconds);
     }
-
-    constructor(millis: number) {
+    constructor(millis) {
         this._millis = millis;
     }
-
-    public get days(): number {
+    get days() {
         return TimeSpan.round(this._millis / MILLIS_PER_DAY);
     }
-
-    public get hours(): number {
+    get hours() {
         return TimeSpan.round((this._millis / MILLIS_PER_HOUR) % 24);
     }
-
-    public get minutes(): number {
+    get minutes() {
         return TimeSpan.round((this._millis / MILLIS_PER_MINUTE) % 60);
     }
-
-    public get seconds(): number {
+    get seconds() {
         return TimeSpan.round((this._millis / MILLIS_PER_SECOND) % 60);
     }
-
-    public get milliseconds(): number {
+    get milliseconds() {
         return TimeSpan.round(this._millis % 1000);
     }
-
-    public get totalDays(): number {
+    get totalDays() {
         return this._millis / MILLIS_PER_DAY;
     }
-
-    public get totalHours(): number {
+    get totalHours() {
         return this._millis / MILLIS_PER_HOUR;
     }
-
-    public get totalMinutes(): number {
+    get totalMinutes() {
         return this._millis / MILLIS_PER_MINUTE;
     }
-
-    public get totalSeconds(): number {
+    get totalSeconds() {
         return this._millis / MILLIS_PER_SECOND;
     }
-
-    public get totalMilliseconds(): number {
+    get totalMilliseconds() {
         return this._millis;
     }
-
-    public add(ts: TimeSpan): TimeSpan {
+    add(ts) {
         const result = this._millis + ts.totalMilliseconds;
         return new TimeSpan(result);
     }
-
-    public subtract(ts: TimeSpan): TimeSpan {
+    subtract(ts) {
         const result = this._millis - ts.totalMilliseconds;
         return new TimeSpan(result);
     }
