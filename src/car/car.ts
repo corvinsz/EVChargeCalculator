@@ -5,7 +5,7 @@
 //       this.maxRange = maxRange;
 //       this.imageSource = imageSource;
 //     }
-  
+
 //     calculateChargingTime(currentCapacity) {
 //       const currentRange = (currentCapacity / 100) * this.maxRange;
 //       const rangeToFullCharge = this.maxRange - currentRange;
@@ -13,7 +13,7 @@
 //       return timeToFullCharge;
 //     }
 //   }
-  
+
 //   const cars = [
 //     new Car('Tesla Model Y LR 2023', 525),
 //     new Car('Nissan Leaf', 270),
@@ -27,4 +27,3 @@ interface Car {
 }
 
 export { Car };
-  
